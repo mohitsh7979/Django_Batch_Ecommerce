@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse
 from django.contrib import messages
 from .models import *
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
 
@@ -70,11 +71,21 @@ def signup(request):
     return render(request,'signup.html')
 
 def loginhandle(request):
+    if request.POST == "POST":
+        uname = request.POST["username"]
+        upassw = request.POST["password"]
+        print(uname,upassw)
+        user = authenticate(username=uname,password=upassw)
+        print(user,"user>>>")
     return render(request,'login.html')
 
 
-def get_data(request):
-    pass
+def addtocart(request,id):
+    user = request.user 
+    product = Product.objects.get(id=id)
+    quantity = request.POST['quantity']
+    size = request.POST['size']
+    
 
 
 
