@@ -33,5 +33,8 @@ urlpatterns = [
     path('shopping_cart/',views.shopping_cart),
     path('signup/',views.signup),
     path('login/',views.loginhandle),
+    path('logout/',views.logouthandle),
+    path('addtocart/',views.addtocart),
+    path('cart_product_delete/<int:id>/',views.cart_product_delete)
    
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

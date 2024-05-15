@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.contrib import messages
 from .models import *
 from django.contrib.auth.models import User
@@ -71,20 +71,46 @@ def signup(request):
     return render(request,'signup.html')
 
 def loginhandle(request):
-    if request.POST == "POST":
+    if request.method == "POST":
         uname = request.POST["username"]
         upassw = request.POST["password"]
-        print(uname,upassw)
+        
+        user_obj = User.objects.filter(username=uname).first()
         user = authenticate(username=uname,password=upassw)
-        print(user,"user>>>")
+        if user_obj is None:
+            messages.success(request,'user not found !!!')
+        
+        if user is None:
+            messages.success(request,'Wrong Password !!')
+        
+        else:
+            login(request,user)
+            return redirect('/')
     return render(request,'login.html')
 
+def logouthandle(request):
+    logout(request)
+    return redirect('/')
 
-def addtocart(request,id):
-    user = request.user 
-    product = Product.objects.get(id=id)
-    quantity = request.POST['quantity']
-    size = request.POST['size']
+
+def addtocart(request):
+    if request.method == "POST":
+        user = request.user 
+        prod_id = request.POST['prod_id']
+        prod = Product.objects.get(id=prod_id)
+        quantity = request.POST['quantity']
+        size = request.POST.get('size','')
+        print(user,prod_id,prod,quantity,size)
+        AddCart(user=user,product=prod,quantity=quantity,size=size).save()
+        return redirect('/addtocart/')
+    data = AddCart.objects.filter(user=request.user)
+    return render(request,'shopping-cart.html',{'data':data})
+
+def cart_product_delete(request,id):
+    cart_product = AddCart.objects.filter(id=id)
+    cart_product.delete()
+    return redirect('/addtocart/')
+  
     
 
 

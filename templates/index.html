@@ -77,14 +77,14 @@
                                 <a href="/signup/">Sign in</a>
                                 <a href="#">FAQs</a>
                             </div>
+                            {% if user.is_authenticated %}
                             <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
+                                <span>{{request.user}} <i class="arrow_carrot-down"></i></span>
                                 <ul>
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>USD</li>
+                                    <li><a href = "/logout/">Logout</a></li>
                                 </ul>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3 col-md-3">
+                <div class="col-lg-2 col-md-2">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png'%}" alt=""></a>
                         <a href="#"><img src="{% static 'img/icon/heart.png'%}" alt=""></a>
